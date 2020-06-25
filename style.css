@@ -17,6 +17,9 @@
 #hangman{
     width: 40%;
 }
+#life{
+    float: right;
+}
 #charbox{
     width:35%;
     display: flex;
@@ -53,7 +56,9 @@
 }
 .wrong{
     background-color: crimson;
+    cursor: not-allowed;
 }
 .right{
     background-color: darkgreen;
+    cursor: not-allowed;
 }
