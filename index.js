@@ -1,6 +1,35 @@
 var word = "PINEAPPLLE";
 var guessCount = 0;
-var totalWordsguessed = 0; 
+var totalWordsguessed ;
+var besttime = {
+    min : 0,
+    sec : 0
+}
+var mintime = 0;
+var sectime = 0;
+var timer;
+var istimerset = false;
+if(JSON.parse(window.localStorage.getItem("hangmangamedata")) == null){
+    let data = {
+        "totalWordsguessed" : 0,
+        "besttime" : {
+            "min" : 0,
+            "sec" : 0,
+        }
+    }
+    window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
+    totalWordsguessed = 0;
+    besttime = 0;
+    console.log("setting")
+}
+else{
+    let data = JSON.parse(window.localStorage.getItem("hangmangamedata"))
+    totalWordsguessed = data.totalWordsguessed;
+    besttime.min = data.besttime.min;
+    besttime.sec = data.besttime.sec;
+    console.log("getting" ,totalWordsguessed,besttime.min,besttime.sec,data.besttime.min,data.besttime.sec)
+}
+
 var imglist = ["https://www.proprofs.com/games/word-games/hangman/image/First.png",
               "https://www.proprofs.com/games/word-games/hangman/image/Second.png",
               "https://www.proprofs.com/games/word-games/hangman/image/Third.png",
@@ -12,10 +41,15 @@ var charbox = document.getElementById("charbox")
 var life = document.getElementById("life")
 var guessbox = document.getElementById("guessbox")
 var displaytotalwords = document.getElementById("totalWordsguessed")
+var currenttime = document.getElementById("currenttime")
+var besttimebox =  document.getElementById("besttime")
 function render(){
     guessCount = 0;
     life.innerText = `Lives Left: ${6-guessCount}`;
     displaytotalwords.innerText = `Total words guessed: ${totalWordsguessed}`;
+    currenttime.innerText = `CurrentTime: ${mintime} : ${sectime}`;
+    console.log(besttime.min,besttime.sec)
+    besttimebox.innerText = `Best Time: ${besttime.min} : ${besttime.sec}`
     imgBox.src= "https://www.publicdomainpictures.net/pictures/30000/nahled/plain-white-background.jpg"
     charbox.innerHTML = "";
     guessbox.innerHTML = "";
@@ -37,6 +71,10 @@ for (let i =0 ; i<word.length;i++){
 }
 render();
 function onclickhandle(e){
+    if(!istimerset){
+      timer = setInterval(myTimer, 1000)
+      istimerset = true;
+    }
     var a = e.target.innerText;
     e.target.onclick = null;
     var isGameWon = true;
@@ -65,6 +103,19 @@ function onclickhandle(e){
         })
         //console.log(letters)
         totalWordsguessed++;
+
+        myTimerclear("win");
+        istimerset = false;
+        let data = {
+            "totalWordsguessed" : totalWordsguessed,
+            "besttime" : {
+                "min" : besttime.min,
+                "sec" : besttime.sec
+            }
+        }
+        console.log(totalWordsguessed)
+        window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
+        
         document.getElementById("modalmessage").innerText = "You WIN!!!"
     document.getElementById("id01").style.display='block'
     }
@@ -78,6 +129,9 @@ function onclickhandle(e){
         for(let i=0;i<word.length;i++){
         guessbox.children[i].innerText = word[i]       
     }
+    
+    myTimerclear("lose");
+    istimerset = false;
     document.getElementById("modalmessage").innerText = "You LOST"
     document.getElementById("id01").style.display='block'
 }
@@ -92,4 +146,26 @@ function restartgame(){
     document.getElementById('id01').style.display='none';
     render();
 
+}
+
+function myTimer(){
+    if(sectime>59){
+        mintime++;
+        sectime = 0;
+    }
+    else{
+        sectime++
+    }
+    currenttime.innerText = `CurrentTime: ${mintime} : ${sectime}`
+}
+function myTimerclear(stat){
+    clearInterval(timer)
+    if(stat == "win"){
+    if(besttime.min*60 + besttime.sec > mintime*60 + sectime || (besttime.min == 0 && besttime.sec == 0)){
+        besttime.min = mintime;
+        besttime.sec = sectime;
+    }
+}
+    mintime = 0;
+    sectime = 0; 
 }
