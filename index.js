@@ -1,4 +1,4 @@
-var word = "pineapple";
+var word = "PINEAPPLLE";
 var charbox = document.getElementById("charbox")
 for (let i=65;i<65+26;i++){
     var div = document.createElement("div");
@@ -11,10 +11,22 @@ var guessbox = document.getElementById("guessbox")
 for (let i =0 ; i<word.length;i++){
     var div = document.createElement("div");
     div.setAttribute("class","guess")
-    div.innerText="__"
+    div.innerText="___"
     guessbox.appendChild(div)
 
 }
 function onclickhandle(e){
-    console.log(e)
+    var a = e.target.innerText;
+
+    for  (let i =0 ; i<word.length;i++){
+    if(word[i] == a){
+        guessbox.children[i].innerText =  a;
+        e.target.setAttribute("class","guess right")
+        
+    }
+    else{
+        if(word.indexOf(a) == -1)
+        e.target.setAttribute("class","guess wrong")
+    }
+    }
 }

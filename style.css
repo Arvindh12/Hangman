@@ -32,9 +32,28 @@
     font-size: 25px;
     text-align: center;
     border: 1.5px solid black;
-
+    border-radius: 5px;
+    cursor: pointer;
 }
+
 #guessbox{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+}
+
+.guess{
+    width: 80px;
+    height: 50px;
+    padding-top: 25px;
+    margin-top: 10px;
+    font-size: 25px;
+    text-align: center;
+    border: 1.5px solid black;
+    border-radius: 5px;
+}
+.wrong{
+    background-color: crimson;
+}
+.right{
+    background-color: darkgreen;
 }
