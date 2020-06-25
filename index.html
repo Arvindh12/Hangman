@@ -6,7 +6,7 @@
     <title>Hangman</title>
     <link rel="stylesheet" href="style.css">
     <script src="./index.js" defer></script>
-    <script src="animate.js" defer></script>
+    
 </head>
 <body>
     <div id="header">
@@ -16,8 +16,8 @@
         <div id="c1">
         <div id="besttime"> Best Time: 0</div>
         <div id="currenttime"> CurrentTime: </div>
-        <div> Restart game!!! </div>
-        <div> Reset Stats </div>
+        <div> <button onclick="restartgame()">Restart game!!!</button>  </div>
+        <div> <button onclick="resetstats()"> Reset Stats </button>   </div>
         <div id="totalWordsguessed"> Total words guessed: </div>
     </div>
     <div id="c2">
@@ -43,7 +43,7 @@
             <h1 id="modalmessage" ></h1>
             <p>Do you want to play again?</p>
             <div class="clearfix">
-              <button type="button" onclick="restartgame()" class="deletebtn">PLAY AGAIN</button>
+              <button type="button" onclick="restartgamemodal()" class="deletebtn">PLAY AGAIN</button>
             </div>
           </div>
         </div>

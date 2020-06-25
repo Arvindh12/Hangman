@@ -1,4 +1,4 @@
-var word = "PINEAPPLLE";
+var word ;
 var guessCount = 0;
 var totalWordsguessed ;
 var besttime = {
@@ -19,7 +19,8 @@ if(JSON.parse(window.localStorage.getItem("hangmangamedata")) == null){
     }
     window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
     totalWordsguessed = 0;
-    besttime = 0;
+    besttime.min = 0;
+    besttime.sec = 0;
     console.log("setting")
 }
 else{
@@ -43,6 +44,18 @@ var guessbox = document.getElementById("guessbox")
 var displaytotalwords = document.getElementById("totalWordsguessed")
 var currenttime = document.getElementById("currenttime")
 var besttimebox =  document.getElementById("besttime")
+
+function getwordsfromapi(){
+fetch("http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=6&maxLength=10&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5")
+.then(data => data.json())
+.then(data => {
+    word= data[0].word;
+    word = word.toUpperCase();
+    render();})
+}
+
+getwordsfromapi();
+
 function render(){
     guessCount = 0;
     life.innerText = `Lives Left: ${6-guessCount}`;
@@ -50,7 +63,7 @@ function render(){
     currenttime.innerText = `CurrentTime: ${mintime} : ${sectime}`;
     console.log(besttime.min,besttime.sec)
     besttimebox.innerText = `Best Time: ${besttime.min} : ${besttime.sec}`
-    imgBox.src= "https://www.publicdomainpictures.net/pictures/30000/nahled/plain-white-background.jpg"
+    imgBox.src= "white.jpg"
     charbox.innerHTML = "";
     guessbox.innerHTML = "";
 for (let i=65;i<65+26;i++){
@@ -69,7 +82,7 @@ for (let i =0 ; i<word.length;i++){
 
 }
 }
-render();
+
 function onclickhandle(e){
     if(!istimerset){
       timer = setInterval(myTimer, 1000)
@@ -142,9 +155,9 @@ function onclickhandle(e){
     //console.log(imglist[guessCount-1])
 }
 
-function restartgame(){
+function restartgamemodal(){
     document.getElementById('id01').style.display='none';
-    render();
+    getwordsfromapi();
 
 }
 
@@ -168,4 +181,25 @@ function myTimerclear(stat){
 }
     mintime = 0;
     sectime = 0; 
+}
+function resetstats(){
+    window.localStorage.removeItem("hangmangamedata");
+    let data = {
+        "totalWordsguessed" : 0,
+        "besttime" : {
+            "min" : 0,
+            "sec" : 0,
+        }
+    }
+    window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
+    totalWordsguessed = 0;
+    besttime.min = 0;
+    besttime.sec = 0;
+    displaytotalwords.innerText = `Total words guessed: ${totalWordsguessed}`;
+    besttimebox.innerText = `Best Time: ${besttime.min} : ${besttime.sec}`
+}
+function restartgame(){
+    myTimerclear("lose");
+    istimerset = false;
+    render();
 }
