@@ -18,7 +18,7 @@
         <div> CurrentTime: </div>
         <div> Restart game!!! </div>
         <div> Reset Stats </div>
-        <div> Total words guessed: </div>
+        <div id="totalWordsguessed"> Total words guessed: </div>
     </div>
     <div id="c2">
         <div id ="hangman">
@@ -36,5 +36,17 @@
         </div>
     </div>
     </div>
+    <div id="id01" class="modal">
+
+        <div class="modal-content" >
+          <div class="container">
+            <h1 id="modalmessage" ></h1>
+            <p>Do you want to play again?</p>
+            <div class="clearfix">
+              <button type="button" onclick="restartgame()" class="deletebtn">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 </html>
