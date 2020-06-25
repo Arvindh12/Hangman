@@ -1,5 +1,6 @@
 var word = "PINEAPPLLE";
 var guessCount = 0;
+var totalWordsguessed = 0; 
 var imglist = ["https://www.proprofs.com/games/word-games/hangman/image/First.png",
               "https://www.proprofs.com/games/word-games/hangman/image/Second.png",
               "https://www.proprofs.com/games/word-games/hangman/image/Third.png",
@@ -55,10 +56,18 @@ function onclickhandle(e){
     }
     if(guessCount == 6){
         console.log("gameover")
+        var letters = document.querySelectorAll(".char")
+        letters.forEach(ele => {
+            ele.className = (word.indexOf(ele.innerText) == -1)? "guess wrong": "guess right"
+            ele.onclick = null;
+        })
+        for(let i=0;i<word.length;i++){
+        guessbox.children[i].innerText = word[i]       
     }
+}
     if(guessCount>0){
     imgBox.src=imglist[guessCount-1]
-    life.innerText = `Lives Left: ${quessCount-5}`
+    life.innerText = `Lives Left: ${6-guessCount}`
 }
     //console.log(imglist[guessCount-1])
 }
