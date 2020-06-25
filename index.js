@@ -1,6 +1,7 @@
 var word ;
 var guessCount = 0;
 var totalWordsguessed ;
+var totalWordsmissed ;
 var besttime = {
     min : 0,
     sec : 0
@@ -12,6 +13,7 @@ var istimerset = false;
 if(JSON.parse(window.localStorage.getItem("hangmangamedata")) == null){
     let data = {
         "totalWordsguessed" : 0,
+        "totalWordsmissed" : 0,
         "besttime" : {
             "min" : 0,
             "sec" : 0,
@@ -19,6 +21,7 @@ if(JSON.parse(window.localStorage.getItem("hangmangamedata")) == null){
     }
     window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
     totalWordsguessed = 0;
+    totalWordsmissed = 0;
     besttime.min = 0;
     besttime.sec = 0;
     console.log("setting")
@@ -26,6 +29,7 @@ if(JSON.parse(window.localStorage.getItem("hangmangamedata")) == null){
 else{
     let data = JSON.parse(window.localStorage.getItem("hangmangamedata"))
     totalWordsguessed = data.totalWordsguessed;
+    totalWordsmissed = data.totalWordsmissed;
     besttime.min = data.besttime.min;
     besttime.sec = data.besttime.sec;
     console.log("getting" ,totalWordsguessed,besttime.min,besttime.sec,data.besttime.min,data.besttime.sec)
@@ -41,9 +45,11 @@ var imgBox = document.getElementById("source")
 var charbox = document.getElementById("charbox")
 var life = document.getElementById("life")
 var guessbox = document.getElementById("guessbox")
+var displaymissed = document.getElementById("totalWordsmissed")
 var displaytotalwords = document.getElementById("totalWordsguessed")
 var currenttime = document.getElementById("currenttime")
 var besttimebox =  document.getElementById("besttime")
+var lasersound = document.getElementById("myAudio")
 
 function getwordsfromapi(){
 fetch("https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=6&maxLength=10&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5")
@@ -56,14 +62,16 @@ fetch("https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&m
 
 getwordsfromapi();
 
+
 function render(){
     guessCount = 0;
     life.innerText = `Lives Left: ${6-guessCount}`;
     displaytotalwords.innerText = `Total words guessed: ${totalWordsguessed}`;
-    currenttime.innerText = `CurrentTime: ${mintime} : ${sectime}`;
+    displaymissed.innerText = `Total words missed: ${totalWordsmissed}`;
+    currenttime.innerText = `Current Time: ${mintime} : ${sectime}`;
     console.log(besttime.min,besttime.sec)
     besttimebox.innerText = `Best Time: ${besttime.min} : ${besttime.sec}`
-    imgBox.src= "white.jpg"
+    imgBox.src= "zero.png"
     charbox.innerHTML = "";
     guessbox.innerHTML = "";
 for (let i=65;i<65+26;i++){
@@ -84,6 +92,7 @@ for (let i =0 ; i<word.length;i++){
 }
 
 function onclickhandle(e){
+    lasersound.play();
     if(!istimerset){
       timer = setInterval(myTimer, 1000)
       istimerset = true;
@@ -121,6 +130,7 @@ function onclickhandle(e){
         istimerset = false;
         let data = {
             "totalWordsguessed" : totalWordsguessed,
+            "totalWordsmissed" : totalWordsmissed,
             "besttime" : {
                 "min" : besttime.min,
                 "sec" : besttime.sec
@@ -142,7 +152,17 @@ function onclickhandle(e){
         for(let i=0;i<word.length;i++){
         guessbox.children[i].innerText = word[i]       
     }
-    
+    totalWordsmissed++;
+    let data = {
+        "totalWordsguessed" : totalWordsguessed,
+        "totalWordsmissed" : totalWordsmissed,
+        "besttime" : {
+            "min" : besttime.min,
+            "sec" : besttime.sec
+        }
+    }
+    console.log(totalWordsmissed)
+    window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
     myTimerclear("lose");
     istimerset = false;
     document.getElementById("modalmessage").innerText = "You LOST"
@@ -162,14 +182,14 @@ function restartgamemodal(){
 }
 
 function myTimer(){
-    if(sectime>59){
+    if(sectime>=59){
         mintime++;
         sectime = 0;
     }
     else{
         sectime++
     }
-    currenttime.innerText = `CurrentTime: ${mintime} : ${sectime}`
+    currenttime.innerText = `Current Time: ${mintime} : ${sectime}`
 }
 function myTimerclear(stat){
     clearInterval(timer)
@@ -186,6 +206,7 @@ function resetstats(){
     window.localStorage.removeItem("hangmangamedata");
     let data = {
         "totalWordsguessed" : 0,
+        "totalWordsmissed" : 0,
         "besttime" : {
             "min" : 0,
             "sec" : 0,
@@ -195,7 +216,9 @@ function resetstats(){
     totalWordsguessed = 0;
     besttime.min = 0;
     besttime.sec = 0;
+    totalWordsmissed = 0
     displaytotalwords.innerText = `Total words guessed: ${totalWordsguessed}`;
+    displaymissed.innerText = `Total words missed: ${totalWordsmissed}`;
     besttimebox.innerText = `Best Time: ${besttime.min} : ${besttime.sec}`
 }
 function restartgame(){

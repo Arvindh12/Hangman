@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="./index.js" defer></script>
     
 </head>
 <body>
+    <audio id="myAudio">
+        <source src="laser.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
     <div id="header">
         <h1>Hang Man Game</h1>
     </div>
     <div id="content">
         <div id="c1">
-        <div id="besttime"> Best Time: 0</div>
-        <div id="currenttime"> CurrentTime: </div>
-        <div> <button onclick="restartgame()">Restart game!!!</button>  </div>
-        <div> <button onclick="resetstats()"> Reset Stats </button>   </div>
+        <div id="besttime">Best Time: 0</div>
+        <div id="currenttime">Current Time: </div>
+        <div> <button onclick="restartgame()">Restart game!!!</button></div>
+        <div> <button onclick="resetstats()"> Reset Stats </button></div>
         <div id="totalWordsguessed"> Total words guessed: </div>
+        <div id="totalWordsmissed">Total words missed: </div>
     </div>
     <div id="c2">
         <div id ="hangman">
