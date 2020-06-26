@@ -1,3 +1,7 @@
+* {
+    font-family: monospace;
+    font-size: large;
+}
 #header{
     background-image: url("https://images.assetsdelivery.com/compings_v2/sudowoodo/sudowoodo1606/sudowoodo160600025.jpg");
     width: 100%;
@@ -93,9 +97,6 @@ h1{
 }
 
 
-
-
-
 button {
     background-color: #1c4498;
     color: white;
@@ -121,7 +122,9 @@ button {
   .container {
     padding: 16px;
     text-align: center;
+    font-size: large;
   }
+
   
   .modal {
     display: none; /* Hidden by default */
