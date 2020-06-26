@@ -214,8 +214,34 @@ button {
     #c1{
         flex-direction: column;
     }
+    #c1  :nth-child(1){
+        order: 2;
+    }
+    #c1  :nth-child(2){
+        order: 4;
+    }
+    #c1  :nth-child(3){
+        order: 5;
+    }
+    #c1  :nth-child(4){
+        order: 0;
+    }
+    #c1  :nth-child(5){
+        order: 3;
+    }
+    #c1  :nth-child(6){
+        order: 1;
+    }
+    #c1 div {
+        margin-left:15px ;
+        margin-right: 15px;
+    }
     #life{
-        margin: 10px 0px 0px 0px;
+        margin: 10px 0px 0px 100px;
+      
+    }
+    #hangman{
+        width: 100%;
     }
 
   }

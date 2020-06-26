@@ -60,6 +60,8 @@ fetch("https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&m
     word= data[0].word;
     word = word.toUpperCase();
     render();})
+.catch(err => {word = "PINEAPPLE"})
+
 }
 
 getwordsfromapi();
@@ -148,7 +150,8 @@ function onclickhandle(e){
     document.getElementById("id01").style.display='block'
     }
     if(guessCount == 6){
-        failsound.play()
+        failsound.play();
+        
         console.log("gameover")
         var letters = document.querySelectorAll(".char")
         letters.forEach(ele => {
