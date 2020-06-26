@@ -10,6 +10,8 @@ var mintime = 0;
 var sectime = 0;
 var timer;
 var istimerset = false;
+
+/*Setting up local storage to store the game stats*/
 if(JSON.parse(window.localStorage.getItem("hangmangamedata")) == null){
     let data = {
         "totalWordsguessed" : 0,
@@ -41,6 +43,8 @@ var imglist = ["https://www.proprofs.com/games/word-games/hangman/image/First.pn
               "https://www.proprofs.com/games/word-games/hangman/image/Fourth.png",
               "https://www.proprofs.com/games/word-games/hangman/image/Fifth.png",
               "https://www.proprofs.com/games/word-games/hangman/image/Hangman.gif",]
+
+/*Initialize variables*/
 var imgBox = document.getElementById("source")
 var charbox = document.getElementById("charbox")
 var life = document.getElementById("life")
@@ -53,6 +57,7 @@ var lasersound = document.getElementById("myAudio")
 var failsound = document.getElementById("myAudio1")
 var winsound = document.getElementById("myAudio2")
 
+/*Get a random word from api*/
 function getwordsfromapi(){
 fetch("https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=6&maxLength=10&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5")
 .then(data => data.json())
@@ -60,13 +65,12 @@ fetch("https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&m
     word= data[0].word;
     word = word.toUpperCase();
     render();})
-.catch(err => {word = "PINEAPPLE"})
+.catch(err => {word = "PINEAPPLE";render()})  //If error fallback to word pineapple
 
 }
-
 getwordsfromapi();
 
-
+/*Function to render the letters in char box and answer box*/
 function render(){
     guessCount = 0;
     //life.innerText = `Lives Left: ${6-guessCount}`;
@@ -96,9 +100,10 @@ for (let i =0 ; i<word.length;i++){
 }
 }
 
+/*Function to handle the onclick event ie making guess*/
 function onclickhandle(e){
     lasersound.play();
-    
+    //Set time is not set previously
     if(!istimerset){
       timer = setInterval(myTimer, 1000)
       istimerset = true;
@@ -122,6 +127,7 @@ function onclickhandle(e){
         }
     }
     console.log(guessCount)
+    //Logic to find if the player won
     if(isGameWon){
         winsound.play();
         console.log("gamewon")
@@ -149,6 +155,7 @@ function onclickhandle(e){
         document.getElementById("modalmessage").innerText = "You WIN!!!"
     document.getElementById("id01").style.display='block'
     }
+    //Logic to find if player lost the game
     if(guessCount == 6){
         failsound.play();
         
@@ -170,6 +177,7 @@ function onclickhandle(e){
             "sec" : besttime.sec
         }
     }
+    //Update the local storage
     console.log(totalWordsmissed)
     window.localStorage.setItem("hangmangamedata",JSON.stringify(data))
     myTimerclear("lose");
@@ -184,13 +192,13 @@ function onclickhandle(e){
 }
     //console.log(imglist[guessCount-1])
 }
-
+//Restart button
 function restartgamemodal(){
     document.getElementById('id01').style.display='none';
     getwordsfromapi();
 
 }
-
+//Function handler of setinterval
 function myTimer(){
     if(sectime>=59){
         mintime++;
@@ -201,6 +209,7 @@ function myTimer(){
     }
     currenttime.innerText = `Current Time: ${mintime} : ${sectime}`
 }
+//Function to clear the timer and check if its the best time
 function myTimerclear(stat){
     clearInterval(timer)
     if(stat == "win"){
@@ -212,6 +221,7 @@ function myTimerclear(stat){
     mintime = 0;
     sectime = 0; 
 }
+//Function to reset stats in local storage
 function resetstats(){
     window.localStorage.removeItem("hangmangamedata");
     let data = {
@@ -231,6 +241,7 @@ function resetstats(){
     displaymissed.innerText = `Total words missed: ${totalWordsmissed}`;
     besttimebox.innerText = `Best Time: ${besttime.min} : ${besttime.sec}`
 }
+//Function to restart the game with the same word
 function restartgame(){
     myTimerclear("lose");
     istimerset = false;
