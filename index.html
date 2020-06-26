@@ -28,56 +28,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="./render.js" defer></script>
     <script src="./index.js" defer></script>
     
 </head>
 <body>
-    <audio id="myAudio">
-        <source src="laser.mp3" type="audio/mp3">
-      </audio>
-      <audio id="myAudio1">
-        <source src="fail-trombone-02.mp3" type="audio/mp3">
-      </audio>
-      <audio id="myAudio2">
-        <source src="./TaDa.mp3" type="audio/mp3">
-      </audio>
-
-    <div id="header">
-        <h1>Hang Man Game</h1>
-    </div>
-    <div id="content">
-        <div id="c1">
-        <div id="besttime">Best Time: 0</div>
-        <div id="currenttime">Current Time: </div>
-        <div> <button onclick="restartgame()">Restart game!!!</button></div>
-        <div> <button onclick="resetstats()"> Reset Stats </button></div>
-        <div id="totalWordsguessed"> Total words guessed: </div>
-        <div id="totalWordsmissed">Total words missed: </div>
-    </div>
-    <div id="c2">
-        <div id ="hangman">
-            <span id="life">❤️❤️❤️❤️❤️❤️</span>
-                <img id="source" src="" >  
-        </div>
-        <div id="charbox"></div>
-    </div>
-    <div id = "c3"> 
-        <div id="guessbox">
-
-        </div>
-    </div>
-    </div>
-    <div id="id01" class="modal">
-
-        <div class="modal-content" >
-          <div class="container">
-            <h1 id="modalmessage" ></h1>
-            <p>Do you want to play again?</p>
-            <div class="clearfix">
-              <button type="button" onclick="restartgamemodal()" class="deletebtn">PLAY AGAIN</button>
-            </div>
-          </div>
-        </div>
-      </div>
+<div id="root"></div>
 </body>
 </html>

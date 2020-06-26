@@ -214,5 +214,8 @@ button {
     #c1{
         flex-direction: column;
     }
+    #life{
+        margin: 10px 0px 0px 0px;
+    }
 
   }
