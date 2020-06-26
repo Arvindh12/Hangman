@@ -50,6 +50,8 @@ var displaytotalwords = document.getElementById("totalWordsguessed")
 var currenttime = document.getElementById("currenttime")
 var besttimebox =  document.getElementById("besttime")
 var lasersound = document.getElementById("myAudio")
+var failsound = document.getElementById("myAudio1")
+var winsound = document.getElementById("myAudio2")
 
 function getwordsfromapi(){
 fetch("https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=6&maxLength=10&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5")
@@ -65,7 +67,8 @@ getwordsfromapi();
 
 function render(){
     guessCount = 0;
-    life.innerText = `Lives Left: ${6-guessCount}`;
+    //life.innerText = `Lives Left: ${6-guessCount}`;
+    life.innerText = "❤️".repeat(6-guessCount);
     displaytotalwords.innerText = `Total words guessed: ${totalWordsguessed}`;
     displaymissed.innerText = `Total words missed: ${totalWordsmissed}`;
     currenttime.innerText = `Current Time: ${mintime} : ${sectime}`;
@@ -93,6 +96,7 @@ for (let i =0 ; i<word.length;i++){
 
 function onclickhandle(e){
     lasersound.play();
+    
     if(!istimerset){
       timer = setInterval(myTimer, 1000)
       istimerset = true;
@@ -117,6 +121,7 @@ function onclickhandle(e){
     }
     console.log(guessCount)
     if(isGameWon){
+        winsound.play();
         console.log("gamewon")
         var letters = document.querySelectorAll(".char")
         letters.forEach(ele => {
@@ -143,6 +148,7 @@ function onclickhandle(e){
     document.getElementById("id01").style.display='block'
     }
     if(guessCount == 6){
+        failsound.play()
         console.log("gameover")
         var letters = document.querySelectorAll(".char")
         letters.forEach(ele => {
@@ -171,6 +177,7 @@ function onclickhandle(e){
     if(guessCount>0){
     imgBox.src=imglist[guessCount-1]
     life.innerText = `Lives Left: ${6-guessCount}`
+    life.innerText = "❤️".repeat(6-guessCount);
 }
     //console.log(imglist[guessCount-1])
 }
